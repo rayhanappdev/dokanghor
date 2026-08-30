@@ -1,0 +1,163 @@
+/* Smooth Scroll & Custom UI Tweaks */
+html {
+  scroll-behavior: smooth;
+}
+
+body.dark-mode {
+  background-color: #020817 !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .announcement-bar {
+  background: linear-gradient(90deg, #0f172a 0%, #0f766e 35%, #0f172a 100%) !important;
+}
+
+body.dark-mode header {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border-color: rgba(148, 163, 184, 0.2) !important;
+}
+
+body.dark-mode .bg-white,
+body.dark-mode .bg-slate-50,
+body.dark-mode .bg-slate-100,
+body.dark-mode .bg-slate-200,
+body.dark-mode .bg-slate-900,
+body.dark-mode .bg-slate-800,
+body.dark-mode .bg-slate-950 {
+  background-color: #0f172a !important;
+}
+
+body.dark-mode .text-slate-900,
+body.dark-mode .text-slate-800,
+body.dark-mode .text-slate-700,
+body.dark-mode .text-slate-600,
+body.dark-mode .text-slate-500,
+body.dark-mode .text-slate-400,
+body.dark-mode .text-slate-300,
+body.dark-mode .text-slate-200 {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .text-slate-950 {
+  color: #f8fafc !important;
+}
+
+body.dark-mode .border-slate-200,
+body.dark-mode .border-slate-100,
+body.dark-mode .border-slate-300,
+body.dark-mode .border-slate-800 {
+  border-color: rgba(148, 163, 184, 0.25) !important;
+}
+
+body.dark-mode .shadow-sm,
+body.dark-mode .shadow-md,
+body.dark-mode .shadow-lg,
+body.dark-mode .shadow-xl,
+body.dark-mode .shadow-2xl {
+  box-shadow: none !important;
+}
+
+body.dark-mode .bg-slate-100 input,
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .bg-slate-100,
+body.dark-mode .bg-slate-50,
+body.dark-mode .bg-white {
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.12) !important;
+}
+
+body.dark-mode .bg-emerald-50,
+body.dark-mode .bg-blue-50,
+body.dark-mode .bg-amber-50,
+body.dark-mode .bg-purple-50,
+body.dark-mode .bg-rose-50,
+body.dark-mode .bg-brand-50 {
+  background-color: rgba(15, 23, 42, 0.7) !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Animations */
+@keyframes scaleUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Toast styling */
+.toast-item {
+  animation: toastSlide 0.3s ease forwards, toastFade 0.3s ease 2.7s forwards;
+}
+
+@keyframes toastSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toastFade {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Print Invoice Styling */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #invoicePrintArea, #invoicePrintArea * {
+    visibility: visible;
+  }
+  #invoicePrintArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+  }
+}

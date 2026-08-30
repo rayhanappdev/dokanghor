@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>দোকানঘর | Bangladesh's Modern E-Commerce Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Hind Siliguri', 'Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+            },
+            bkash: '#e2136e',
+            nagad: '#f7941d',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#f8fafc] text-slate-800 font-sans min-h-screen flex flex-col antialiased pb-16 md:pb-0">
+
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar bg-gradient-to-r from-emerald-800 via-brand-700 to-teal-800 text-white text-xs sm:text-sm py-2 px-4 text-center font-medium shadow-inner flex items-center justify-center gap-2">
+    <span>🎁 স্পেশাল অফার! কুপন কোড ব্যবহার করুন: <strong class="bg-white/20 px-2 py-0.5 rounded text-amber-300 tracking-wider">EID2026</strong> (১০% ডিসকাউন্ট)</span>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+        
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2.5 flex-shrink-0">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white text-xl font-bold shadow-md shadow-brand-500/20">
+            <i class="fa-solid fa-bag-shopping"></i>
+          </div>
+          <span class="text-2xl font-extrabold text-slate-900 tracking-tight">দোকান<span class="text-brand-600">ঘর</span></span>
+        </a>
+
+        <!-- Desktop Search Bar -->
+        <div class="flex-1 max-w-xl hidden md:block">
+          <div class="relative">
+            <input 
+              type="text" 
+              id="searchInput" 
+              placeholder="পণ্য, ক্যাটাগরি বা ব্র্যান্ড খুঁজুন..." 
+              class="w-full pl-11 pr-4 py-2.5 text-sm bg-slate-100 border border-transparent rounded-full focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 focus:outline-none transition-all"
+            >
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+          </div>
+        </div>
+
+        <!-- Right Action Items -->
+        <div class="flex items-center gap-3">
+          <!-- Dark Mode Toggle -->
+          <button 
+            id="darkModeToggle" 
+            class="p-2.5 rounded-full text-slate-600 hover:text-amber-500 hover:bg-amber-50 border border-slate-200 transition"
+            title="ডার্ক মোড"
+            aria-label="Toggle dark mode"
+          >
+            <i id="darkModeIcon" class="fa-solid fa-moon text-lg"></i>
+          </button>
+
+          <!-- Wishlist Button -->
+          <button 
+            id="wishlistToggleBtn" 
+            class="relative p-2.5 rounded-full text-slate-600 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition"
+            title="উইশলিস্ট"
+          >
+            <i class="fa-regular fa-heart text-lg"></i>
+            <span id="wishlistCountBadge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+          </button>
+
+          <!-- Cart Button -->
+          <button 
+            id="cartToggleBtn" 
+            class="relative flex items-center gap-2.5 bg-brand-600 hover:bg-brand-700 text-white px-4 py-2.5 rounded-full transition shadow-md shadow-brand-600/20 font-semibold text-sm"
+          >
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="hidden sm:inline">কার্ট</span>
+            <span id="cartCountBadge" class="bg-white text-brand-700 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">0</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Search Bar -->
+      <div class="pb-3 md:hidden">
+        <div class="relative">
+          <input 
+            type="text" 
+            id="mobileSearchInput" 
+            placeholder="পণ্য বা ব্র্যান্ড খুঁজুন..." 
+            class="w-full pl-10 pr-4 py-2 text-sm bg-slate-100 border border-slate-200 rounded-full focus:bg-white focus:border-brand-500 focus:outline-none"
+          >
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-emerald-950 to-brand-900 text-white p-8 sm:p-14 shadow-2xl border border-slate-800">
+      <div class="relative z-10 max-w-xl">
+        <span class="inline-flex items-center gap-1.5 bg-brand-500/20 text-brand-300 border border-brand-500/30 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+          <i class="fa-solid fa-bolt text-amber-400"></i> মেগা উইকলি ডিল
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+          সেরা গ্যাজেট ও লাইফস্টাইল পণ্য আকর্ষণীয় মূল্যে
+        </h1>
+        <p class="text-sm sm:text-base text-slate-300 mb-8 leading-relaxed">
+          জেনুইন কোয়ালিটি, ক্যাশ অন ডেলিভারি এবং দ্রুততম হোম ডেলিভারি সুবিধা উপভোগ করুন এখনই।
+        </p>
+        <div class="flex flex-wrap items-center gap-4">
+          <a href="#productSection" class="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-bold px-7 py-3.5 rounded-full transition shadow-lg shadow-brand-500/30 text-sm">
+            <span>কেনাকাটা শুরু করুন</span>
+            <i class="fa-solid fa-arrow-down text-xs"></i>
+          </a>
+          <span class="text-xs text-slate-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-check text-brand-400"></i> ১০০% নিরাপদ কেনাকাটা
+          </span>
+        </div>
+      </div>
+      <div class="absolute right-0 bottom-0 opacity-15 pointer-events-none transform translate-x-10 translate-y-10">
+        <i class="fa-solid fa-cart-flatbed-suitcase text-[340px]"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Badges -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+      <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-xl bg-emerald-50 text-brand-600 flex items-center justify-center text-xl flex-shrink-0">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-900 text-xs sm:text-sm">সারা দেশে ডেলিভারি</h4>
+          <p class="text-[11px] text-slate-500">২৪-৭২ ঘণ্টার মধ্যে হোম ডেলিভারি</p>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl flex-shrink-0">
+          <i class="fa-solid fa-shield-check"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-900 text-xs sm:text-sm">১০০% আসল পণ্য</h4>
+          <p class="text-[11px] text-slate-500">ব্র্যান্ডের গুণগত নিশ্চয়তা</p>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl flex-shrink-0">
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-900 text-xs sm:text-sm">ক্যাশ অন ডেলিভারি</h4>
+          <p class="text-[11px] text-slate-500">পণ্য দেখে টাকা পরিশোধ করুন</p>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl flex-shrink-0">
+          <i class="fa-solid fa-arrow-rotate-left"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-900 text-xs sm:text-sm">সহজ রিটার্ন পলিসি</h4>
+          <p class="text-[11px] text-slate-500">৭ দিনের মধ্যে ফ্রি রিটার্ন</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter & Products Section -->
+  <main id="productSection" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-1">
+    
+    <!-- Controls Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <!-- Category Tabs -->
+      <div id="categoryTabs" class="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <!-- Sorting Filter -->
+      <div class="flex items-center gap-3 self-end sm:self-auto">
+        <label for="sortSelect" class="text-xs text-slate-500 font-semibold whitespace-nowrap">সর্ট করুন:</label>
+        <select id="sortSelect" class="bg-white border border-slate-200 text-xs font-semibold text-slate-700 rounded-xl px-3 py-2 focus:outline-none focus:border-brand-500">
+          <option value="default">ডিফল্ট</option>
+          <option value="price-low">মূল্য: কম থেকে বেশি</option>
+          <option value="price-high">মূল্য: বেশি থেকে কম</option>
+          <option value="rating">সর্বোচ্চ রেটিং</option>
+        </select>
+        <span id="productCountBadge" class="text-xs font-bold text-slate-600 bg-slate-200 px-3 py-1.5 rounded-full"></span>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+      <!-- Rendered by app.js -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden text-center py-20">
+      <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl text-slate-400">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+      <h3 class="text-lg font-bold text-slate-800">কোনো পণ্য পাওয়া যায়নি</h3>
+      <p class="text-xs text-slate-500 mt-1">অন্য কোনো কি-ওয়ার্ড দিয়ে খুঁজে দেখুন।</p>
+    </div>
+  </main>
+
+  <!-- Floating WhatsApp Direct Order Button -->
+  <a 
+    href="https://wa.me/8801700000000?text=Hello,%20I%20want%20to%20order%20from%20your%20website" 
+    target="_blank" 
+    class="fixed bottom-20 md:bottom-6 left-6 z-40 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center gap-2 group"
+    title="হোয়াটসঅ্যাপে অর্ডার করুন"
+  >
+    <i class="fa-brands fa-whatsapp text-2xl"></i>
+    <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 text-xs font-bold whitespace-nowrap">
+      হোয়াটসঅ্যাপ অর্ডার
+    </span>
+  </a>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <div class="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 flex justify-around items-center py-2.5 md:hidden shadow-lg">
+    <a href="#" class="flex flex-col items-center text-brand-600 text-xs font-bold">
+      <i class="fa-solid fa-house text-lg"></i>
+      <span>হোম</span>
+    </a>
+    <a href="#productSection" class="flex flex-col items-center text-slate-500 text-xs font-medium">
+      <i class="fa-solid fa-layer-group text-lg"></i>
+      <span>ক্যাটাগরি</span>
+    </a>
+    <button onclick="openWishlist()" class="flex flex-col items-center text-slate-500 text-xs font-medium relative">
+      <i class="fa-regular fa-heart text-lg"></i>
+      <span>উইশলিস্ট</span>
+      <span id="mobileWishBadge" class="absolute -top-1 right-2 bg-rose-500 text-white text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center">0</span>
+    </button>
+    <button onclick="openCart()" class="flex flex-col items-center text-slate-500 text-xs font-medium relative">
+      <i class="fa-solid fa-cart-shopping text-lg"></i>
+      <span>কার্ট</span>
+      <span id="mobileCartBadge" class="absolute -top-1 right-1 bg-brand-600 text-white text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center">0</span>
+    </button>
+  </div>
+
+  <!-- Cart Slide-Over Drawer -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden" role="dialog" aria-modal="true">
+    <div id="cartBackdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+        
+        <!-- Header -->
+        <div class="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-bag-shopping text-brand-600 text-lg"></i>
+            <h3 class="text-base font-bold text-slate-900">আপনার শপিং ব্যাগ</h3>
+          </div>
+          <button id="cartCloseBtn" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-full hover:bg-slate-200">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Items -->
+        <div id="cartItemsList" class="flex-1 overflow-y-auto p-5 space-y-3.5"></div>
+
+        <!-- Empty Cart State -->
+        <div id="emptyCartView" class="hidden flex-1 flex flex-col items-center justify-center p-6 text-center">
+          <i class="fa-solid fa-cart-arrow-down text-5xl text-slate-300 mb-3"></i>
+          <p class="font-bold text-slate-700">আপনার কার্ট খালি</p>
+          <p class="text-xs text-slate-400 mt-1">পছন্দের পণ্য যোগ করতে কেনাকাটা চালিয়ে যান</p>
+        </div>
+
+        <!-- Footer / Coupon & Checkout -->
+        <div id="cartFooter" class="p-5 border-t border-slate-200 bg-slate-50 space-y-3">
+          
+          <!-- Coupon Box -->
+          <div class="flex gap-2">
+            <input type="text" id="couponInput" placeholder="কুপন কোড (EID2026)" class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs uppercase focus:outline-none focus:border-brand-500">
+            <button onclick="applyCoupon()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition">এপ্লাই</button>
+          </div>
+          <div id="couponMessage" class="text-[11px] hidden font-semibold"></div>
+
+          <!-- Total Calculation -->
+          <div class="space-y-1.5 text-xs text-slate-600 pt-2 border-t border-slate-200">
+            <div class="flex justify-between">
+              <span>সাবটোটাল</span>
+              <span id="cartSubtotalText" class="font-bold text-slate-900">৳০</span>
+            </div>
+            <div id="discountRow" class="flex justify-between text-brand-600 hidden">
+              <span>ডিসকাউন্ট</span>
+              <span id="cartDiscountText">-৳০</span>
+            </div>
+          </div>
+
+          <button 
+            id="proceedToCheckoutBtn" 
+            class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2 text-sm"
+          >
+            <span>চেকআউট করুন</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Wishlist Modal -->
+  <div id="wishlistModal" class="fixed inset-0 z-50 overflow-hidden hidden">
+    <div id="wishlistBackdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+        <div class="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+          <div class="flex items-center gap-2 text-rose-600">
+            <i class="fa-solid fa-heart text-lg"></i>
+            <h3 class="text-base font-bold text-slate-900">উইশলিস্ট (সংরক্ষিত পণ্য)</h3>
+          </div>
+          <button id="wishlistCloseBtn" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-full hover:bg-slate-200">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div id="wishlistItemsList" class="flex-1 overflow-y-auto p-5 space-y-3.5"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Quick View Modal -->
+  <div id="quickViewModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div id="quickViewBackdrop" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm"></div>
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+      <div class="relative bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-slate-100 overflow-hidden animate-scale-up">
+        <button id="quickViewCloseBtn" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+        <div id="quickViewContent" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <!-- Dynamic Content -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Complete Checkout Modal -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div id="checkoutBackdrop" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm"></div>
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+      <div class="relative bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-100">
+        
+        <button id="checkoutCloseBtn" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+
+        <div class="mb-6">
+          <h3 class="text-2xl font-bold text-slate-900">ডেলিভারি তথ্য ও পেমেন্ট</h3>
+          <p class="text-xs text-slate-500 mt-1">অর্ডার সম্পন্ন করতে নিচের তথ্যগুলো সঠিক ভাবে পূরণ করুন</p>
+        </div>
+
+        <form id="checkoutForm" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">আপনার নাম *</label>
+              <input type="text" id="custName" required placeholder="উদা: মোঃ রাহিম আহমেদ" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-brand-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">মোবাইল নম্বর *</label>
+              <input type="tel" id="custPhone" required placeholder="017XXXXXXXX" pattern="01[3-9][0-9]{8}" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-brand-500">
+            </div>
+          </div>
+
+          <!-- Delivery Area -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1.5">ডেলিভারি এলাকা নির্বাচন করুন *</label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="flex items-center gap-2.5 p-3 border rounded-2xl cursor-pointer hover:bg-slate-50 transition border-brand-500 bg-brand-50/40 delivery-radio-label">
+                <input type="radio" name="deliveryArea" value="inside" checked class="accent-brand-600">
+                <div>
+                  <p class="text-xs sm:text-sm font-bold text-slate-800">ঢাকার ভিতরে</p>
+                  <p class="text-[11px] text-slate-500">চার্জ: ৳৬০</p>
+                </div>
+              </label>
+
+              <label class="flex items-center gap-2.5 p-3 border rounded-2xl cursor-pointer hover:bg-slate-50 transition border-slate-200 delivery-radio-label">
+                <input type="radio" name="deliveryArea" value="outside" class="accent-brand-600">
+                <div>
+                  <p class="text-xs sm:text-sm font-bold text-slate-800">ঢাকার বাইরে</p>
+                  <p class="text-[11px] text-slate-500">চার্জ: ৳১২০</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">পূর্ণাঙ্গ ঠিকানা (বাসা নং, রোড, এলাকা, জেলা) *</label>
+            <textarea id="custAddress" required rows="2" placeholder="উদা: বাড়ি নং ৪, রোড নং ৯, সেক্টর ১০, উত্তরা, ঢাকা" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-brand-500"></textarea>
+          </div>
+
+          <!-- Payment Options -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-2">পেমেন্ট মেথড নির্বাচন করুন *</label>
+            <div class="space-y-2.5">
+              
+              <!-- COD -->
+              <label class="flex items-center justify-between p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition border-brand-500 bg-brand-50/30">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="paymentMethod" value="cod" checked onchange="togglePaymentBox()" class="accent-brand-600">
+                  <div>
+                    <span class="text-xs sm:text-sm font-bold text-slate-800">ক্যাশ অন ডেলিভারি (Cash On Delivery)</span>
+                    <p class="text-[11px] text-slate-500">পণ্য হাতে পাওয়ার পর মূল্য পরিশোধ করুন</p>
+                  </div>
+                </div>
+                <i class="fa-solid fa-hand-holding-dollar text-xl text-brand-600"></i>
+              </label>
+
+              <!-- bKash -->
+              <label class="flex items-center justify-between p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition border-slate-200">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="paymentMethod" value="bkash" onchange="togglePaymentBox()" class="accent-pink-600">
+                  <div>
+                    <span class="text-xs sm:text-sm font-bold text-slate-800">বিকাশ (bKash Send Money)</span>
+                    <p class="text-[11px] text-slate-500">আমাদের পার্সোনাল বিকাশ নম্বরে সেন্ড মানি করুন</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-pink-600 bg-pink-50 px-2.5 py-1 rounded-lg border border-pink-200">bKash</span>
+              </label>
+
+              <!-- Nagad -->
+              <label class="flex items-center justify-between p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition border-slate-200">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="paymentMethod" value="nagad" onchange="togglePaymentBox()" class="accent-orange-600">
+                  <div>
+                    <span class="text-xs sm:text-sm font-bold text-slate-800">নগদ (Nagad Send Money)</span>
+                    <p class="text-[11px] text-slate-500">আমাদের নগদ একাউন্টে পেমেন্ট করুন</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-lg border border-orange-200">Nagad</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Dynamic Manual Payment Verification Box -->
+          <div id="manualPaymentBox" class="hidden p-4 rounded-2xl border space-y-3">
+            <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200">
+              <div>
+                <p class="text-xs text-slate-500" id="merchantLabel">বিকাশ পার্সোনাল নম্বর:</p>
+                <p class="text-base font-bold text-slate-900 tracking-wider" id="merchantNumber">01780230719</p>
+              </div>
+              <button type="button" onclick="copyNumber()" class="text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                <i class="fa-regular fa-copy"></i> কপি করুন
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">প্রেরকের মোবাইল নম্বর *</label>
+                <input type="tel" id="senderPhone" placeholder="01XXXXXXXXX" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-brand-500">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Transaction ID (TrxID) *</label>
+                <input type="text" id="transactionId" placeholder="উদা: 9K72J8L2" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs uppercase focus:outline-none focus:border-brand-500">
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary Box -->
+          <div class="bg-slate-50 p-4 rounded-2xl space-y-2 border border-slate-200 text-xs">
+            <div class="flex justify-between text-slate-600">
+              <span>পণ্যের মোট মূল্য:</span>
+              <span id="checkoutSubtotal">৳০</span>
+            </div>
+            <div id="checkoutDiscountRow" class="flex justify-between text-brand-600 hidden">
+              <span>ডিসকাউন্ট:</span>
+              <span id="checkoutDiscount">-৳০</span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>ডেলিভারি চার্জ:</span>
+              <span id="checkoutDelivery">৳৬০</span>
+            </div>
+            <div class="border-t border-slate-200 pt-2 flex justify-between text-sm font-bold text-slate-900">
+              <span>সর্বমোট প্রদেয়:</span>
+              <span id="checkoutTotal" class="text-brand-600">৳৬০</span>
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3.5 rounded-2xl transition shadow-lg shadow-brand-600/30 text-sm flex items-center justify-center gap-2"
+          >
+            <i class="fa-solid fa-circle-check"></i>
+            <span>অর্ডার কনফার্ম করুন</span>
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Success & Invoice Modal -->
+  <div id="successModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm"></div>
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+      <div class="relative bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 text-center shadow-2xl border border-slate-100 animate-scale-up" id="invoicePrintArea">
+        <div class="w-16 h-16 bg-emerald-100 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-900 mb-1">অর্ডার সফলভাবে গৃহীত হয়েছে!</h3>
+        <p class="text-xs text-slate-500 mb-6">ধন্যবাদ! খুব শীঘ্রই আমাদের কাস্টমার কেয়ার থেকে আপনার অর্ডারের জন্য কল করা হবে।</p>
+        
+        <!-- Printable Invoice Summary -->
+        <div class="bg-slate-50 p-4 rounded-2xl text-left text-xs space-y-2 mb-6 border border-slate-200">
+          <div class="flex justify-between border-b border-slate-200 pb-2">
+            <span class="text-slate-500">অর্ডার আইডি:</span>
+            <strong id="invoiceOrderId" class="text-brand-700"></strong>
+          </div>
+          <p><span class="text-slate-500">গ্রাহকের নাম:</span> <span id="invoiceName" class="font-semibold"></span></p>
+          <p><span class="text-slate-500">মোবাইল নম্বর:</span> <span id="invoicePhone" class="font-semibold"></span></p>
+          <p><span class="text-slate-500">ডেলিভারি ঠিকানা:</span> <span id="invoiceAddress" class="font-semibold"></span></p>
+          <p><span class="text-slate-500">পেমেন্ট মেথড:</span> <span id="invoicePayment" class="font-semibold"></span></p>
+          <div class="border-t border-slate-200 pt-2 flex justify-between font-bold text-slate-900">
+            <span>সর্বমোট টাকা:</span>
+            <span id="invoiceTotal" class="text-brand-600"></span>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button onclick="window.print()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl transition text-xs flex items-center justify-center gap-2">
+            <i class="fa-solid fa-print"></i> ইনভয়েস প্রিন্ট
+          </button>
+          <button id="successOkBtn" class="flex-1 bg-brand-600 text-white font-bold py-3 rounded-xl hover:bg-brand-700 transition text-xs">
+            সম্পন্ন
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-300 py-12 mt-16 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <span class="text-2xl font-extrabold text-white">দোকান<span class="text-brand-500">ঘর</span></span>
+        <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+          বাংলাদেশের নির্ভরযোগ্য অনলাইন শপ। মানসম্মত পণ্য ও দ্রুততম হোম ডেলিভারি নিশ্চয়তা।
+        </p>
+      </div>
+      <div>
+        <h4 class="text-white font-bold text-sm mb-3">যোগাযোগ</h4>
+        <p class="text-xs text-slate-400 leading-6">
+          <i class="fa-solid fa-location-dot text-brand-500 w-4"></i> ঢাকা, বাংলাদেশ<br>
+          <i class="fa-solid fa-phone text-brand-500 w-4"></i> +880 1700-000000<br>
+          <i class="fa-solid fa-envelope text-brand-500 w-4"></i> support@dokanghor.com
+        </p>
+      </div>
+      <div>
+        <h4 class="text-white font-bold text-sm mb-3">নিরাপদ পেমেন্ট পার্টনার</h4>
+        <div class="flex flex-wrap gap-2 text-xs font-bold text-white">
+          <span class="bg-slate-800 px-3 py-1 rounded border border-slate-700">bKash</span>
+          <span class="bg-slate-800 px-3 py-1 rounded border border-slate-700">Nagad</span>
+          <span class="bg-slate-800 px-3 py-1 rounded border border-slate-700">Rocket</span>
+          <span class="bg-slate-800 px-3 py-1 rounded border border-slate-700">Cash on Delivery</span>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-4">© 2026 দোকানঘর | সর্বস্বত্ব সংরক্ষিত।</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
