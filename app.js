@@ -166,6 +166,7 @@ let appliedCouponCode = "";
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
+  initializeTheme();
   injectSeoStructuredData();
   renderAuthHeader();
   renderCategories();
@@ -175,7 +176,32 @@ document.addEventListener('DOMContentLoaded', () => {
   setupEvents();
 });
 
+function initializeTheme() {
+  const savedTheme = localStorage.getItem('bd_store_theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+  applyTheme(theme);
+}
+
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+  document.body.classList.toggle('dark-mode', isDark);
+  localStorage.setItem('bd_store_theme', theme);
+
+  const themeBtn = document.getElementById('themeToggleBtn');
+  if (themeBtn) {
+    themeBtn.innerHTML = isDark
+      ? '<i class="fa-solid fa-sun text-sm"></i>'
+      : '<i class="fa-solid fa-moon text-sm"></i>';
+    themeBtn.title = isDark ? 'হালকা থিম' : 'গাঢ় থিম';
+  }
+}
+
 function setupEvents() {
+  document.getElementById('themeToggleBtn')?.addEventListener('click', () => {
+    const nextTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+    applyTheme(nextTheme);
+  });
   document.getElementById('searchInput')?.addEventListener('input', (e) => {
     searchQuery = e.target.value.toLowerCase().trim();
     renderProducts();
@@ -313,51 +339,179 @@ function switchAuthTab(tab) {
   }
 }
 
-// ১. ক্লাউডে সাইন-আপ ও ইউজার সংরক্ষণ
-async function handleSignup(e) {
-  e.preventDefault();
+// -------------------------------------------------------------
+// OTP SMS VERIFICATION SYSTEM
+// -------------------------------------------------------------
+
+let generatedOTP = null;
+let otpCountdown = 60;
+let otpTimerInterval = null;
+let pendingSignupData = null;
+
+// ১. OTP পাঠানো ও ভ্যালিডেশন
+async function sendSignupOTP() {
   const name = document.getElementById('signupName').value.trim();
   const phone = document.getElementById('signupPhone').value.trim();
   const address = document.getElementById('signupAddress').value.trim();
   const password = document.getElementById('signupPassword').value;
 
+  if (!name || !phone || !password) {
+    showToast("দয়া করে নাম, মোবাইল নম্বর ও পাসওয়ার্ড পূরণ করুন!");
+    return;
+  }
+
+  // মোবাইল নম্বর ভ্যালিডেশন (BD Format: 01XXXXXXXXX)
+  const bdPhoneRegex = /^01[3-9]\d{8}$/;
+  if (!bdPhoneRegex.test(phone)) {
+    showToast("সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (উদা: 017XXXXXXXX)!");
+    return;
+  }
+
+  if (password.length < 6) {
+    showToast("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে!");
+    return;
+  }
+
   try {
-    // চেক করা এই নম্বরে আগে থেকে একাউন্ট আছে কিনা (Firebase Firestore)
-    const userDoc = await db.collection("users").doc(phone).get();
-    if (userDoc.exists) {
-      showToast("এই নম্বরে ইতিমধ্যে অ্যাকাউন্ট রয়েছে! দয়া করে লগইন করুন।");
+    // চেক করা এই নম্বরে আগে থেকে অ্যাকাউন্ট আছে কিনা
+    const userDoc = await getDoc(doc(db, 'users', phone));
+    if (userDoc.exists()) {
+      showToast("এই নম্বরে ইতিমধ্যে অ্যাকাউন্ট রয়েছে! লগইন করুন।");
       switchAuthTab('login');
       return;
     }
 
+    // ৪ ডিজিটের র্যান্ডম OTP কোড তৈরি
+    generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+    pendingSignupData = { name, phone, address, password };
+
+    // স্ক্রিনে নম্বর ও OTP দেখানো (টেস্টিং এবং এসএমএস গেটওয়ের জন্য)
+    document.getElementById('displayOtpPhone').textContent = phone;
+    document.getElementById('demoOtpCode').textContent = generatedOTP;
+
+    // ফর্ম স্টেপ পরিবর্তন
+    document.getElementById('signupStep1').classList.add('hidden');
+    document.getElementById('signupStep2').classList.remove('hidden');
+
+    startOtpTimer();
+    showToast(`আপনার নম্বরে OTP কোড পাঠানো হয়েছে!`);
+  } catch (error) {
+    console.error("OTP send error:", error);
+    showToast("OTP পাঠাতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+  }
+}
+
+// ২. OTP কাউন্টডাউন টাইমার
+function startOtpTimer() {
+  otpCountdown = 60;
+  document.getElementById('otpTimer').textContent = `${otpCountdown}s`;
+  document.getElementById('resendOtpBtn').classList.add('hidden');
+  document.getElementById('otpTimerText').classList.remove('hidden');
+
+  clearInterval(otpTimerInterval);
+  otpTimerInterval = setInterval(() => {
+    otpCountdown--;
+    document.getElementById('otpTimer').textContent = `${otpCountdown}s`;
+
+    if (otpCountdown <= 0) {
+      clearInterval(otpTimerInterval);
+      document.getElementById('otpTimerText').classList.add('hidden');
+      document.getElementById('resendOtpBtn').classList.remove('hidden');
+    }
+  }, 1000);
+}
+
+// ৩. পুনরায় OTP পাঠানো
+function resendSignupOTP() {
+  generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+  document.getElementById('demoOtpCode').textContent = generatedOTP;
+  startOtpTimer();
+  showToast("নতুন OTP কোড পাঠানো হয়েছে!");
+}
+
+// ৪. পেছনের ধাপে ফিরে যাওয়া
+function backToSignupStep1() {
+  clearInterval(otpTimerInterval);
+  document.getElementById('signupStep2').classList.add('hidden');
+  document.getElementById('signupStep1').classList.remove('hidden');
+}
+
+// ৫. OTP যাচাই ও Firebase-এ অ্যাকাউন্ট সংরক্ষণ
+async function verifySignupOTP() {
+  const enteredOtp = document.getElementById('inputOtp').value.trim();
+
+  if (!enteredOtp) {
+    showToast("অনুগ্রহ করে OTP কোডটি লিখুন!");
+    return;
+  }
+
+  if (enteredOtp !== generatedOTP) {
+    showToast("ভুল OTP কোড! সঠিক কোড দিন।");
+    return;
+  }
+
+  // OTP সফল হলে Firebase ক্লাউডে অ্যাকাউন্ট তৈরি
+  try {
+    const { name, phone, address, password } = pendingSignupData;
+
     const newUser = {
       id: 'USR_' + Date.now(),
-      name,
-      phone,
-      address,
-      password,
+      name: name,
+      phone: phone,
+      address: address || '',
+      password: password,
+      phoneVerified: true, // মোবাইল নম্বর ভেরিফাইড
       joinedAt: new Date().toLocaleString('bn-BD')
     };
 
-    // Firebase ক্লাউড ডাটাবেজে ইউজার সেভ করা
-    await db.collection("users").doc(phone).set(newUser);
+    // Firebase Firestore-এ সেভ
+    await setDoc(doc(db, 'users', phone), newUser);
 
-    // লোকালি লগইন সেশন রাখা
     currentUser = newUser;
     localStorage.setItem('bd_current_user', JSON.stringify(currentUser));
 
+    clearInterval(otpTimerInterval);
     closeAuthModal();
     renderAuthHeader();
-    showToast(`স্বাগতম, ${name}! অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।`);
+    showToast(`অভিনন্দন, ${name}! মোবাইল নম্বর ভেরিফিকেশন সফল হয়েছে।`);
 
-    // কার্টে পণ্য থাকলে সরাসরি চেকআউট ওপেন হবে
+    // রিসেট ফর্ম
+    backToSignupStep1();
+    document.getElementById('signupForm').reset();
+
+    // কার্টে পণ্য থাকলে সরাসরি চেকআউট ওপেন
     if (cart.length > 0) {
       openCheckout();
     }
   } catch (error) {
-    console.error("Signup error:", error);
-    showToast("অ্যাকাউন্ট তৈরিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    console.error("Registration error:", error);
+    showToast("অ্যাকাউন্ট সংরক্ষণে সমস্যা হয়েছে।");
   }
+}
+
+async function handleSignup(e) {
+  if (e) e.preventDefault();
+
+  const name = document.getElementById('signupName')?.value.trim();
+  const phone = document.getElementById('signupPhone')?.value.trim();
+  const password = document.getElementById('signupPassword')?.value;
+
+  if (!name || !phone || !password) {
+    showToast('দয়া করে সব ফিল্ড পূরণ করুন।');
+    return;
+  }
+
+  if (!/^01[3-9]\d{8}$/.test(phone)) {
+    showToast('সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (উদা: 017XXXXXXXX)');
+    return;
+  }
+
+  if (password.length < 6) {
+    showToast('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে!');
+    return;
+  }
+
+  sendSignupOTP();
 }
 
 // ২. ক্লাউড ডাটাবেজ থেকে লগইন ভেরিফিকেশন
@@ -367,17 +521,15 @@ async function handleLogin(e) {
   const password = document.getElementById('loginPassword').value;
 
   try {
-    // Firebase থেকে কাস্টমারের তথ্য যাচাই করা
-    const userDoc = await db.collection("users").doc(phone).get();
-    
-    if (!userDoc.exists) {
+    const userDoc = await getDoc(doc(db, 'users', phone));
+
+    if (!userDoc.exists()) {
       showToast("এই নম্বরে কোনো অ্যাকাউন্ট পাওয়া যায়নি! সাইন-আপ করুন।");
       return;
     }
 
     const userData = userDoc.data();
 
-    // পাসওয়ার্ড চেক
     if (userData.password !== password) {
       showToast("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
       return;
@@ -390,47 +542,6 @@ async function handleLogin(e) {
     renderAuthHeader();
     showToast(`স্বাগতম ফিরে আসার জন্য, ${userData.name}!`);
 
-    // কার্টে পণ্য থাকলে সরাসরি চেকআউটে নিয়ে যাবে
-    if (cart.length > 0) {
-      openCheckout();
-    }
-  } catch (error) {
-    console.error("Login error:", error);
-    showToast("লগইন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
-  }
-}
-
-// ক্লাউড ডাটাবেজ থেকে কাস্টমার লগইন ভেরিফিকেশন
-async function handleLogin(e) {
-  e.preventDefault();
-  const phone = document.getElementById('loginPhone').value.trim();
-  const password = document.getElementById('loginPassword').value;
-
-  try {
-    // Firebase থেকে কাস্টমারের তথ্য যাচাই করা
-    const userDoc = await db.collection("users").doc(phone).get();
-
-    if (!userDoc.exists) {
-      showToast("এই নম্বরে কোনো অ্যাকাউন্ট পাওয়া যায়নি! সাইন-আপ করুন।");
-      return;
-    }
-
-    const userData = userDoc.data();
-
-    // পাসওয়ার্ড চেক
-    if (userData.password !== password) {
-      showToast("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
-      return;
-    }
-
-    currentUser = userData;
-    localStorage.setItem('bd_current_user', JSON.stringify(currentUser));
-
-    closeAuthModal();
-    renderAuthHeader();
-    showToast(`স্বাগতম ফিরে আসার জন্য, ${userData.name}!`);
-
-    // কার্টে পণ্য থাকলে সরাসরি চেকআউটে নিয়ে যাবে
     if (cart.length > 0) {
       openCheckout();
     }

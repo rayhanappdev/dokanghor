@@ -70,7 +70,7 @@
           <input 
             type="password" 
             id="adminPassInput" 
-            placeholder="পাসওয়ার্ড দিন (ডিফল্ট: admin123)" 
+            placeholder="পাসওয়ার্ড দিন" 
             required 
             class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-brand-600 focus:bg-white"
           >
@@ -315,14 +315,16 @@
       localStorage.setItem('bd_store_products', JSON.stringify(products));
     }
 
+    const ADMIN_PASSWORD = 'RaYhAn007@';
+
     document.getElementById('loginForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const pass = document.getElementById('adminPassInput').value;
-      if (pass === 'admin123') {
+      if (pass === ADMIN_PASSWORD) {
         sessionStorage.setItem('bd_admin_auth', 'true');
         checkAuth();
       } else {
-        alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন (ডিফল্ট: admin123)");
+        alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
       }
     });
 
