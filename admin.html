@@ -12,6 +12,28 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getStorage } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDRRIqrkGfcGgZzAm50_eZYcW-oYSx6UTM",
+      authDomain: "dokanghor-shop.firebaseapp.com",
+      projectId: "dokanghor-shop",
+      storageBucket: "dokanghor-shop.firebasestorage.app",
+      messagingSenderId: "655650687885",
+      appId: "1:655650687885:web:47cbf189b2741966280bc4",
+      measurementId: "G-R6HXZN992V"
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+    const firebaseStorage = getStorage(firebaseApp);
+
+    window.firebaseApp = firebaseApp;
+    window.firebaseStorage = firebaseStorage;
+    window.firebaseConfig = firebaseConfig;
+  </script>
+
   <script>
     tailwind.config = {
       theme: {

@@ -1,7 +1,9 @@
 /**
  * Modern E-Commerce Application State & Engine
+ * With Complete Customer Auth, Profile & Order Tracking
  */
 
+// Products Storage Initialization
 let PRODUCTS = JSON.parse(localStorage.getItem('bd_store_products')) || [
   {
     id: 1,
@@ -39,7 +41,7 @@ let PRODUCTS = JSON.parse(localStorage.getItem('bd_store_products')) || [
     rating: 4.7,
     reviews: 64,
     image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&q=80",
-    description: "১০০% পিওর কটন ফেব্রিক দিয়ে তৈরি, আরামদায়ক ও নিখুঁত ফিনিশিং। যেকোনো পার্টি বা অফিসের জন্য মানানসই।",
+    description: "১০০% পিওর কটন ফেব্রিক দিয়ে তৈরি, আরামদায়ক ও নিখুঁত ফিনিশিং।",
     badge: "নতুন"
   },
   {
@@ -52,60 +54,8 @@ let PRODUCTS = JSON.parse(localStorage.getItem('bd_store_products')) || [
     rating: 4.9,
     reviews: 210,
     image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&q=80",
-    description: "কাস্টম ব্লু সুইচ এবং ১৮টি কাস্টমাইজেবল আরজিবি লাইটিং ইফেক্ট সহ হেভি ডিউটি মেকানিক্যাল কীবোর্ড।",
+    description: "কাস্টম ব্লু সুইচ এবং ১৮টি আরজিবি লাইটিং ইফেক্ট সহ হেভি ডিউটি মেকানিক্যাল কীবোর্ড।",
     badge: "বেস্ট সেলার"
-  },
-  {
-    id: 5,
-    name: "ওয়াটারপ্রুফ অ্যান্টি-থেফ্ট ট্রাভেল ব্যাকপ্যাক",
-    category: "fashion",
-    categoryName: "ফ্যাশন",
-    price: 1350,
-    oldPrice: 1950,
-    rating: 4.6,
-    reviews: 78,
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80",
-    description: "ল্যাপটপ চেম্বার এবং বিল্ট-ইন ইউএসবি চার্জিং পোর্ট সহ অত্যন্ত টেকসই ও ওয়াটারপ্রুফ ট্রাভেল ব্যাকপ্যাক।",
-    badge: "জনপ্রিয়"
-  },
-  {
-    id: 6,
-    name: "পোর্টেবল হাই-বেস ব্লুটুথ স্পিকার",
-    category: "gadgets",
-    categoryName: "গ্যাজেটস",
-    price: 1150,
-    oldPrice: 1650,
-    rating: 4.7,
-    reviews: 55,
-    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&q=80",
-    description: "ওয়াটার রেজিস্ট্যান্ট এবং ১০ মিটার ওয়্যারলেস রেঞ্জ সহ স্পষ্ট ক্রিস্টাল সাউন্ড ও ডিপ বেস।",
-    badge: "অফার"
-  },
-  {
-    id: 7,
-    name: "ফাস্ট চার্জিং পাওয়ার ব্যাংক 20,000 mAh (22.5W)",
-    category: "electronics",
-    categoryName: "ইলেকট্রনিক্স",
-    price: 1750,
-    oldPrice: 2300,
-    rating: 4.8,
-    reviews: 130,
-    image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=600&q=80",
-    description: "PD + QC 3.0 ফাস্ট চার্জিং সমর্থন করে। একসাথে ৩টি ডিভাইস চার্জ করার চমৎকার সুবিধা।",
-    badge: "বেস্ট সেলার"
-  },
-  {
-    id: 8,
-    name: "আল্ট্রা-লাইট ব্রিদেবল রানিং স্নিকার্স",
-    category: "fashion",
-    categoryName: "ফ্যাশন",
-    price: 1650,
-    oldPrice: 2450,
-    rating: 4.6,
-    reviews: 90,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
-    description: "হালকা ও নরম সোলের আরামদায়ক রানিং স্নিকার্স। প্রতিদিনের হাঁটাচলা ও শরীরচর্চার জন্য আদর্শ।",
-    badge: "স্পেশাল"
   }
 ];
 
@@ -120,9 +70,93 @@ const CATEGORIES = [
   { id: "fashion", name: "ফ্যাশন" }
 ];
 
+const STORE_CONFIG = {
+  name: 'দোকানঘর',
+  description: 'বাংলাদেশের অনলাইন শপ: গ্যাজেট, ফ্যাশন ও ইলেকট্রনিক্স পণ্য, দ্রুত ডেলিভারি, ক্যাশ অন ডেলিভারি ও WhatsApp অর্ডার।',
+  url: 'https://www.dokanghor.com/',
+  telephone: '+8801780230719',
+  logo: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80'
+};
+
+function injectSeoStructuredData() {
+  const storeScript = document.getElementById('storeSeoJson');
+  const faqScript = document.getElementById('faqSeoJson');
+
+  const productList = (JSON.parse(localStorage.getItem('bd_store_products')) || PRODUCTS).slice(0, 8).map((product) => ({
+    '@type': 'ListItem',
+    position: 1,
+    name: product.name,
+    url: `${STORE_CONFIG.url}#${product.id}`,
+    image: product.image,
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'BDT',
+      price: product.price,
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition'
+    }
+  }));
+
+  if (storeScript) {
+    storeScript.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Store',
+      name: STORE_CONFIG.name,
+      description: STORE_CONFIG.description,
+      url: STORE_CONFIG.url,
+      telephone: STORE_CONFIG.telephone,
+      logo: STORE_CONFIG.logo,
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: 'BD',
+        addressLocality: 'Dhaka',
+        streetAddress: 'Dhaka, Bangladesh'
+      },
+      sameAs: ['https://wa.me/8801780230719'],
+      itemListElement: productList
+    });
+  }
+
+  if (faqScript) {
+    faqScript.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'ডেলিভারি সময় কত?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'সাধারণত ২৪-৭২ ঘণ্টার মধ্যে ঢাকার ভেতরে ও সারা দেশে দ্রুত ডেলিভারি দেওয়া হয়।'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'ক্যাশ অন ডেলিভারি আছে?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'হ্যাঁ, আপনি পণ্য দেখে টাকা দিতে পারেন। সঠিক ডেলিভারি ঠিকানা নিশ্চিত করুন।'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'আমি কীভাবে অর্ডার করব?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'পণ্য নির্বাচন করে কার্টে রাখুন, তারপর অর্ডার সম্পন্ন করুন অথবা WhatsApp-এ সরাসরি অর্ডার করতে পারেন।'
+          }
+        }
+      ]
+    });
+  }
+}
+
 // App State
 let cart = JSON.parse(localStorage.getItem('bd_shop_cart')) || [];
 let wishlist = JSON.parse(localStorage.getItem('bd_shop_wishlist')) || [];
+let currentUser = JSON.parse(localStorage.getItem('bd_current_user')) || null;
+let users = JSON.parse(localStorage.getItem('bd_registered_users')) || [];
+
 let selectedCategory = "all";
 let searchQuery = "";
 let sortBy = "default";
@@ -130,31 +164,10 @@ let deliveryFee = 60;
 let discountAmount = 0;
 let appliedCouponCode = "";
 
-function applyTheme(theme) {
-  const isDark = theme === 'dark';
-  document.body.classList.toggle('dark-mode', isDark);
-
-  const icon = document.getElementById('darkModeIcon');
-  if (icon) {
-    icon.classList.toggle('fa-moon', !isDark);
-    icon.classList.toggle('fa-sun', isDark);
-    icon.classList.toggle('text-amber-400', isDark);
-    icon.classList.toggle('text-slate-600', !isDark);
-  }
-
-  localStorage.setItem('bd_shop_theme', theme);
-}
-
-function toggleTheme() {
-  const nextTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-  applyTheme(nextTheme);
-}
-
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem('bd_shop_theme') || 'light';
-  applyTheme(savedTheme);
-
+  injectSeoStructuredData();
+  renderAuthHeader();
   renderCategories();
   renderProducts();
   updateCartUI();
@@ -163,9 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupEvents() {
-  document.getElementById('darkModeToggle')?.addEventListener('click', toggleTheme);
-
-  // Navigation & Search
   document.getElementById('searchInput')?.addEventListener('input', (e) => {
     searchQuery = e.target.value.toLowerCase().trim();
     renderProducts();
@@ -175,7 +185,6 @@ function setupEvents() {
     renderProducts();
   });
 
-  // Sort
   document.getElementById('sortSelect')?.addEventListener('change', (e) => {
     sortBy = e.target.value;
     renderProducts();
@@ -186,7 +195,7 @@ function setupEvents() {
   document.getElementById('cartCloseBtn')?.addEventListener('click', closeCart);
   document.getElementById('cartBackdrop')?.addEventListener('click', closeCart);
 
-  // Wishlist Modal
+  // Wishlist
   document.getElementById('wishlistToggleBtn')?.addEventListener('click', openWishlist);
   document.getElementById('wishlistCloseBtn')?.addEventListener('click', closeWishlist);
   document.getElementById('wishlistBackdrop')?.addEventListener('click', closeWishlist);
@@ -202,6 +211,17 @@ function setupEvents() {
   });
   document.getElementById('checkoutCloseBtn')?.addEventListener('click', closeCheckout);
   document.getElementById('checkoutBackdrop')?.addEventListener('click', closeCheckout);
+
+  // Auth Modals
+  document.getElementById('authCloseBtn')?.addEventListener('click', closeAuthModal);
+  document.getElementById('authBackdrop')?.addEventListener('click', closeAuthModal);
+  document.getElementById('loginForm')?.addEventListener('submit', handleLogin);
+  document.getElementById('signupForm')?.addEventListener('submit', handleSignup);
+
+  // Profile Modal
+  document.getElementById('profileCloseBtn')?.addEventListener('click', closeProfileModal);
+  document.getElementById('profileBackdrop')?.addEventListener('click', closeProfileModal);
+  document.getElementById('updateProfileForm')?.addEventListener('submit', handleProfileUpdate);
 
   // Delivery selection
   document.querySelectorAll('input[name="deliveryArea"]').forEach(radio => {
@@ -220,6 +240,327 @@ function setupEvents() {
     document.getElementById('successModal')?.classList.add('hidden');
   });
 }
+
+// -------------------------------------------------------------
+// USER AUTHENTICATION & PROFILE LOGIC
+// -------------------------------------------------------------
+
+function renderAuthHeader() {
+  const container = document.getElementById('userNavContainer');
+  if (!container) return;
+
+  if (currentUser) {
+    // Logged in UI
+    const firstLetter = currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U';
+    container.innerHTML = `
+      <button onclick="openProfileModal()" class="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-1.5 rounded-full border border-slate-200 transition">
+        <div class="w-7 h-7 rounded-full bg-brand-600 text-white font-bold text-xs flex items-center justify-center">
+          ${firstLetter}
+        </div>
+        <span class="text-xs font-bold hidden sm:inline max-w-[100px] truncate">${currentUser.name}</span>
+      </button>
+    `;
+  } else {
+    // Logged out UI
+    container.innerHTML = `
+      <button onclick="openAuthModal('login')" class="flex items-center gap-1.5 bg-slate-100 hover:bg-brand-50 text-slate-700 hover:text-brand-600 px-3.5 py-2 rounded-full border border-slate-200 font-bold text-xs transition">
+        <i class="fa-regular fa-user"></i>
+        <span>লগইন</span>
+      </button>
+    `;
+  }
+}
+
+function handleMobileProfileClick() {
+  if (currentUser) {
+    openProfileModal();
+  } else {
+    openAuthModal('login');
+  }
+}
+
+function openAuthModal(tab = 'login') {
+  switchAuthTab(tab);
+  document.getElementById('authModal')?.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAuthModal() {
+  document.getElementById('authModal')?.classList.add('hidden');
+  document.body.style.overflow = 'auto';
+}
+// যদি কার্টে পণ্য থাকে, লগইন সফল হওয়া মাত্রই চেকআউট ওপেন হবে
+  if (cart.length > 0) {
+    openCheckout();
+  }
+
+function switchAuthTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('loginForm')?.classList.toggle('hidden', !isLogin);
+  document.getElementById('signupForm')?.classList.toggle('hidden', isLogin);
+
+  const tabLogin = document.getElementById('authTabLogin');
+  const tabSignup = document.getElementById('authTabSignup');
+
+  if (tabLogin && tabSignup) {
+    tabLogin.className = isLogin 
+      ? "flex-1 py-3 text-sm font-bold text-brand-600 border-b-2 border-brand-600 transition" 
+      : "flex-1 py-3 text-sm font-bold text-slate-400 hover:text-slate-700 transition";
+
+    tabSignup.className = !isLogin 
+      ? "flex-1 py-3 text-sm font-bold text-brand-600 border-b-2 border-brand-600 transition" 
+      : "flex-1 py-3 text-sm font-bold text-slate-400 hover:text-slate-700 transition";
+  }
+}
+
+// ১. ক্লাউডে সাইন-আপ ও ইউজার সংরক্ষণ
+async function handleSignup(e) {
+  e.preventDefault();
+  const name = document.getElementById('signupName').value.trim();
+  const phone = document.getElementById('signupPhone').value.trim();
+  const address = document.getElementById('signupAddress').value.trim();
+  const password = document.getElementById('signupPassword').value;
+
+  try {
+    // চেক করা এই নম্বরে আগে থেকে একাউন্ট আছে কিনা (Firebase Firestore)
+    const userDoc = await db.collection("users").doc(phone).get();
+    if (userDoc.exists) {
+      showToast("এই নম্বরে ইতিমধ্যে অ্যাকাউন্ট রয়েছে! দয়া করে লগইন করুন।");
+      switchAuthTab('login');
+      return;
+    }
+
+    const newUser = {
+      id: 'USR_' + Date.now(),
+      name,
+      phone,
+      address,
+      password,
+      joinedAt: new Date().toLocaleString('bn-BD')
+    };
+
+    // Firebase ক্লাউড ডাটাবেজে ইউজার সেভ করা
+    await db.collection("users").doc(phone).set(newUser);
+
+    // লোকালি লগইন সেশন রাখা
+    currentUser = newUser;
+    localStorage.setItem('bd_current_user', JSON.stringify(currentUser));
+
+    closeAuthModal();
+    renderAuthHeader();
+    showToast(`স্বাগতম, ${name}! অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।`);
+
+    // কার্টে পণ্য থাকলে সরাসরি চেকআউট ওপেন হবে
+    if (cart.length > 0) {
+      openCheckout();
+    }
+  } catch (error) {
+    console.error("Signup error:", error);
+    showToast("অ্যাকাউন্ট তৈরিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+  }
+}
+
+// ২. ক্লাউড ডাটাবেজ থেকে লগইন ভেরিফিকেশন
+async function handleLogin(e) {
+  e.preventDefault();
+  const phone = document.getElementById('loginPhone').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+    // Firebase থেকে কাস্টমারের তথ্য যাচাই করা
+    const userDoc = await db.collection("users").doc(phone).get();
+    
+    if (!userDoc.exists) {
+      showToast("এই নম্বরে কোনো অ্যাকাউন্ট পাওয়া যায়নি! সাইন-আপ করুন।");
+      return;
+    }
+
+    const userData = userDoc.data();
+
+    // পাসওয়ার্ড চেক
+    if (userData.password !== password) {
+      showToast("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
+      return;
+    }
+
+    currentUser = userData;
+    localStorage.setItem('bd_current_user', JSON.stringify(currentUser));
+
+    closeAuthModal();
+    renderAuthHeader();
+    showToast(`স্বাগতম ফিরে আসার জন্য, ${userData.name}!`);
+
+    // কার্টে পণ্য থাকলে সরাসরি চেকআউটে নিয়ে যাবে
+    if (cart.length > 0) {
+      openCheckout();
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    showToast("লগইন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+  }
+}
+
+// ক্লাউড ডাটাবেজ থেকে কাস্টমার লগইন ভেরিফিকেশন
+async function handleLogin(e) {
+  e.preventDefault();
+  const phone = document.getElementById('loginPhone').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+    // Firebase থেকে কাস্টমারের তথ্য যাচাই করা
+    const userDoc = await db.collection("users").doc(phone).get();
+
+    if (!userDoc.exists) {
+      showToast("এই নম্বরে কোনো অ্যাকাউন্ট পাওয়া যায়নি! সাইন-আপ করুন।");
+      return;
+    }
+
+    const userData = userDoc.data();
+
+    // পাসওয়ার্ড চেক
+    if (userData.password !== password) {
+      showToast("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
+      return;
+    }
+
+    currentUser = userData;
+    localStorage.setItem('bd_current_user', JSON.stringify(currentUser));
+
+    closeAuthModal();
+    renderAuthHeader();
+    showToast(`স্বাগতম ফিরে আসার জন্য, ${userData.name}!`);
+
+    // কার্টে পণ্য থাকলে সরাসরি চেকআউটে নিয়ে যাবে
+    if (cart.length > 0) {
+      openCheckout();
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    showToast("লগইন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+  }
+}
+
+function logoutUser() {
+  currentUser = null;
+  localStorage.removeItem('bd_current_user');
+  closeProfileModal();
+  renderAuthHeader();
+  showToast("সফলভাবে লগআউট করা হয়েছে");
+}
+
+function openProfileModal() {
+  if (!currentUser) return;
+
+  document.getElementById('userAvatarText').textContent = currentUser.name.charAt(0).toUpperCase();
+  document.getElementById('profileDisplayName').textContent = currentUser.name;
+  document.getElementById('profileDisplayPhone').textContent = currentUser.phone;
+
+  document.getElementById('editName').value = currentUser.name;
+  document.getElementById('editPhone').value = currentUser.phone;
+  document.getElementById('editAddress').value = currentUser.address || '';
+
+  renderUserOrders();
+  switchProfileSection('orders');
+
+  document.getElementById('profileModal')?.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProfileModal() {
+  document.getElementById('profileModal')?.classList.add('hidden');
+  document.body.style.overflow = 'auto';
+}
+
+function switchProfileSection(sec) {
+  const isOrders = sec === 'orders';
+  document.getElementById('userOrdersSection')?.classList.toggle('hidden', !isOrders);
+  document.getElementById('userInfoSection')?.classList.toggle('hidden', isOrders);
+
+  const tabOrders = document.getElementById('pTabOrders');
+  const tabInfo = document.getElementById('pTabInfo');
+
+  if (tabOrders && tabInfo) {
+    tabOrders.className = isOrders 
+      ? "px-4 py-2 rounded-xl text-xs font-bold bg-brand-600 text-white transition flex items-center gap-1.5"
+      : "px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5";
+
+    tabInfo.className = !isOrders 
+      ? "px-4 py-2 rounded-xl text-xs font-bold bg-brand-600 text-white transition flex items-center gap-1.5"
+      : "px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5";
+  }
+}
+
+function renderUserOrders() {
+  const container = document.getElementById('userOrdersSection');
+  if (!container || !currentUser) return;
+
+  const allOrders = JSON.parse(localStorage.getItem('bd_store_orders')) || [];
+  // Filter orders matching current user's phone
+  const userOrders = allOrders.filter(o => o.phone === currentUser.phone);
+
+  if (userOrders.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-10 text-slate-400 text-xs">
+        <i class="fa-solid fa-box-open text-3xl mb-2 text-slate-300"></i>
+        <p>আপনার কোনো পূর্ববর্তী অর্ডার নেই</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = userOrders.map(order => `
+    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs space-y-2">
+      <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+        <div>
+          <span class="font-extrabold text-brand-700">${order.orderId}</span>
+          <p class="text-[10px] text-slate-400">${order.date}</p>
+        </div>
+        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${
+          order.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+        }">
+          ${order.status === 'delivered' ? 'ডেলিভারড' : 'পেন্ডিং প্রসেসিং'}
+        </span>
+      </div>
+
+      <div class="flex justify-between items-center pt-1 text-slate-700">
+        <div>
+          <p class="text-[11px] text-slate-500">পেমেন্ট: <strong>${order.paymentMethod}</strong></p>
+          <p class="text-[11px] text-slate-500">ঠিকানা: ${order.address}</p>
+        </div>
+        <div class="text-right">
+          <p class="text-sm font-extrabold text-slate-900">৳${Number(order.total).toLocaleString('bn-BD')}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function handleProfileUpdate(e) {
+  e.preventDefault();
+  if (!currentUser) return;
+
+  const newName = document.getElementById('editName').value.trim();
+  const newAddress = document.getElementById('editAddress').value.trim();
+
+  currentUser.name = newName;
+  currentUser.address = newAddress;
+
+  // Update in users array
+  const idx = users.findIndex(u => u.phone === currentUser.phone);
+  if (idx !== -1) {
+    users[idx] = currentUser;
+    localStorage.setItem('bd_registered_users', JSON.stringify(users));
+  }
+
+  localStorage.setItem('bd_current_user', JSON.stringify(currentUser));
+  renderAuthHeader();
+  document.getElementById('profileDisplayName').textContent = newName;
+  showToast("প্রোফাইল তথ্য সফলভাবে আপডেট হয়েছে!");
+}
+
+// -------------------------------------------------------------
+// SHOPPING, CART & CHECKOUT LOGIC
+// -------------------------------------------------------------
 
 function renderCategories() {
   const container = document.getElementById('categoryTabs');
@@ -245,7 +586,6 @@ function filterCategory(id) {
 }
 
 function renderProducts() {
-  // [যুক্ত করা অংশ ১]: অ্যাডমিন প্যানেল থেকে লেটেস্ট প্রোডাক্ট লোড করা
   PRODUCTS = JSON.parse(localStorage.getItem('bd_store_products')) || PRODUCTS;
 
   let list = PRODUCTS.filter(p => {
@@ -254,7 +594,6 @@ function renderProducts() {
     return matchCat && matchQuery;
   });
 
-  // Sort logic
   if (sortBy === 'price-low') list.sort((a, b) => Number(a.price) - Number(b.price));
   else if (sortBy === 'price-high') list.sort((a, b) => Number(b.price) - Number(a.price));
   else if (sortBy === 'rating') list.sort((a, b) => Number(b.rating) - Number(a.rating));
@@ -277,8 +616,6 @@ function renderProducts() {
     const inWishlist = wishlist.includes(p.id);
     return `
       <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group relative">
-        
-        <!-- Wishlist Button -->
         <button 
           onclick="toggleWishlist(${p.id})" 
           class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-slate-400 hover:text-rose-600 shadow-sm transition"
@@ -286,7 +623,6 @@ function renderProducts() {
           <i class="${inWishlist ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-sm"></i>
         </button>
 
-        <!-- Product Image -->
         <div class="relative pt-[85%] overflow-hidden bg-slate-50 cursor-pointer" onclick="openQuickView(${p.id})">
           <img 
             src="${p.image}" 
@@ -301,7 +637,6 @@ function renderProducts() {
           ` : ''}
         </div>
 
-        <!-- Content -->
         <div class="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
           <div>
             <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider">${p.categoryName || p.category}</span>
@@ -316,7 +651,6 @@ function renderProducts() {
             </div>
           </div>
 
-          <!-- Price & Actions -->
           <div>
             <div class="flex items-baseline gap-2 mb-3">
               <span class="text-base sm:text-lg font-extrabold text-slate-900">৳${Number(p.price).toLocaleString('bn-BD')}</span>
@@ -347,7 +681,6 @@ function renderProducts() {
   }).join('');
 }
 
-// Cart Functions
 function addToCart(productId, qty = 1) {
   const p = PRODUCTS.find(x => x.id === productId);
   if (!p) return;
@@ -364,6 +697,7 @@ function addToCart(productId, qty = 1) {
   showToast(`"${p.name}" কার্টে যোগ করা হয়েছে`);
 }
 
+// Buy Now with Strict Login Protection
 function buyNow(productId) {
   const p = PRODUCTS.find(x => x.id === productId);
   if (!p) return;
@@ -374,6 +708,14 @@ function buyNow(productId) {
     saveCart();
     updateCartUI();
   }
+
+  // [লগইন চেক]
+  if (!currentUser) {
+    showToast("অর্ডার করতে অনুগ্রহ করে প্রথমে লগইন করুন!");
+    openAuthModal('login');
+    return;
+  }
+
   openCheckout();
 }
 
@@ -453,7 +795,6 @@ function updateCartUI() {
   `).join('');
 }
 
-// Coupon Logic
 function applyCoupon() {
   const code = document.getElementById('couponInput')?.value.trim().toUpperCase();
   const msg = document.getElementById('couponMessage');
@@ -493,7 +834,6 @@ function applyCoupon() {
   }
 }
 
-// Wishlist Logic
 function toggleWishlist(productId) {
   if (wishlist.includes(productId)) {
     wishlist = wishlist.filter(id => id !== productId);
@@ -537,7 +877,6 @@ function updateWishlistUI() {
   `).join('');
 }
 
-// Quick View Modal
 function openQuickView(id) {
   const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
@@ -582,7 +921,6 @@ function closeQuickView() {
   document.body.style.overflow = 'auto';
 }
 
-// Drawer Open/Close Handlers
 function openCart() {
   document.getElementById('cartDrawer')?.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
@@ -600,15 +938,34 @@ function closeWishlist() {
   document.body.style.overflow = 'auto';
 }
 
+// Checkout with Strict Login Protection
 function openCheckout() {
+  // [লগইন চেক]: লগইন না থাকলে চেকআউট ব্লক করে লগইন মডাল খুলবে
+  if (!currentUser) {
+    showToast("অর্ডার সম্পন্ন করতে অনুগ্রহ করে প্রথমে লগইন করুন!");
+    openAuthModal('login');
+    return;
+  }
+
   if (cart.length === 0) {
     showToast("আপনার কার্ট খালি!");
     return;
   }
+
+  // লগইন করা থাকলে গ্রাহকের তথ্য স্বয়ংক্রিয়ভাবে ফর্মে বসে যাবে
+  const custName = document.getElementById('custName');
+  const custPhone = document.getElementById('custPhone');
+  const custAddress = document.getElementById('custAddress');
+
+  if (custName) custName.value = currentUser.name || '';
+  if (custPhone) custPhone.value = currentUser.phone || '';
+  if (custAddress) custAddress.value = currentUser.address || '';
+
   updateCheckoutSummary();
   document.getElementById('checkoutModal')?.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
+
 function closeCheckout() {
   document.getElementById('checkoutModal')?.classList.add('hidden');
   document.body.style.overflow = 'auto';
@@ -667,11 +1024,11 @@ function togglePaymentBox() {
 
     if (method === 'bkash') {
       if (label) label.textContent = "বিকাশ পার্সোনাল নম্বর (Send Money):";
-      if (num) num.textContent = "01700000000";
+      if (num) num.textContent = "01780230719";
       box.className = "p-4 rounded-2xl border border-pink-200 bg-pink-50/40 space-y-3";
     } else {
       if (label) label.textContent = "নগদ পার্সোনাল নম্বর (Send Money):";
-      if (num) num.textContent = "01800000000";
+      if (num) num.textContent = "01780230719";
       box.className = "p-4 rounded-2xl border border-orange-200 bg-orange-50/40 space-y-3";
     }
   } else {
@@ -690,7 +1047,6 @@ function copyNumber() {
   }
 }
 
-// Checkout Submit Handler & Send to Admin Panel
 function handleCheckoutSubmit(e) {
   e.preventDefault();
 
@@ -709,7 +1065,7 @@ function handleCheckoutSubmit(e) {
     nagad: "নগদ (TrxID সহ)"
   };
 
-  // [যুক্ত করা অংশ ২]: গ্রাহকের নতুন অর্ডারটি অ্যাডমিন প্যানেলে স্বয়ংক্রিয়ভাবে সেভ করা
+  // Save order to central storage for admin & customer
   const existingOrders = JSON.parse(localStorage.getItem('bd_store_orders')) || [];
   existingOrders.unshift({
     orderId: `#${orderId}`,
@@ -739,7 +1095,7 @@ function handleCheckoutSubmit(e) {
   if (invPayment) invPayment.textContent = paymentNames[method];
   if (invTotal) invTotal.textContent = `৳${total.toLocaleString('bn-BD')}`;
 
-  // Clear Cart & Reset Form
+  // Reset Cart
   cart = [];
   discountAmount = 0;
   appliedCouponCode = "";
@@ -752,7 +1108,6 @@ function handleCheckoutSubmit(e) {
   document.getElementById('successModal')?.classList.remove('hidden');
 }
 
-// Toast Utility
 function showToast(message) {
   const container = document.getElementById('toastContainer');
   if (!container) return;

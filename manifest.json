@@ -1,0 +1,21 @@
+{
+  "name": "দোকানঘর | Bangladesh Online Shop",
+  "short_name": "দোকানঘর",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#16a34a",
+  "description": "বাংলাদেশের অনলাইন শপ: গ্যাজেট, ফ্যাশন, ইলেকট্রনিক্স ও ক্যাশ অন ডেলিভারি।",
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=192&q=80",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=512&q=80",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
