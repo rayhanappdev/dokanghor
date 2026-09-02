@@ -23,8 +23,78 @@ body.dark-mode .bg-slate-100,
 body.dark-mode .bg-slate-200,
 body.dark-mode .bg-slate-900,
 body.dark-mode .bg-slate-800,
-body.dark-mode .bg-slate-950 {
+body.dark-mode .bg-slate-950,
+body.dark-mode [class*="bg-gradient-to-"] {
   background-color: #0f172a !important;
+  background-image: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.96)) !important;
+}
+
+body.dark-mode [class*="from-"],
+body.dark-mode [class*="via-"],
+body.dark-mode [class*="to-"] {
+  --tw-gradient-from: #0f172a !important;
+  --tw-gradient-to: rgba(15, 23, 42, 0.9) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+body.dark-mode .bg-white,
+body.dark-mode .bg-slate-50,
+body.dark-mode .bg-slate-100,
+body.dark-mode [class*="bg-gradient-to-"] {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .bg-white p,
+body.dark-mode .bg-slate-50 p,
+body.dark-mode .bg-slate-100 p,
+body.dark-mode [class*="bg-gradient-to-"] p,
+body.dark-mode .bg-white h1,
+body.dark-mode .bg-slate-50 h1,
+body.dark-mode .bg-slate-100 h1,
+body.dark-mode [class*="bg-gradient-to-"] h1,
+body.dark-mode .bg-white h2,
+body.dark-mode .bg-slate-50 h2,
+body.dark-mode .bg-slate-100 h2,
+body.dark-mode [class*="bg-gradient-to-"] h2,
+body.dark-mode .bg-white h3,
+body.dark-mode .bg-slate-50 h3,
+body.dark-mode .bg-slate-100 h3,
+body.dark-mode [class*="bg-gradient-to-"] h3,
+body.dark-mode .bg-white h4,
+body.dark-mode .bg-slate-50 h4,
+body.dark-mode .bg-slate-100 h4,
+body.dark-mode [class*="bg-gradient-to-"] h4,
+body.dark-mode .bg-white h5,
+body.dark-mode .bg-slate-50 h5,
+body.dark-mode .bg-slate-100 h5,
+body.dark-mode [class*="bg-gradient-to-"] h5,
+body.dark-mode .bg-white h6,
+body.dark-mode .bg-slate-50 h6,
+body.dark-mode .bg-slate-100 h6,
+body.dark-mode [class*="bg-gradient-to-"] h6,
+body.dark-mode .bg-white span,
+body.dark-mode .bg-slate-50 span,
+body.dark-mode .bg-slate-100 span,
+body.dark-mode [class*="bg-gradient-to-"] span,
+body.dark-mode .bg-white li,
+body.dark-mode .bg-slate-50 li,
+body.dark-mode .bg-slate-100 li,
+body.dark-mode [class*="bg-gradient-to-"] li {
+  color: inherit !important;
+}
+
+body.dark-mode [class*="text-slate-"],
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode li,
+body.dark-mode a,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+  color: #e2e8f0 !important;
 }
 
 body.dark-mode .text-slate-900,
@@ -36,6 +106,10 @@ body.dark-mode .text-slate-400,
 body.dark-mode .text-slate-300,
 body.dark-mode .text-slate-200 {
   color: #e2e8f0 !important;
+}
+
+body.dark-mode .text-slate-950 {
+  color: #f8fafc !important;
 }
 
 body.dark-mode .text-slate-950 {
@@ -78,6 +152,135 @@ body.dark-mode .bg-purple-50,
 body.dark-mode .bg-rose-50,
 body.dark-mode .bg-brand-50 {
   background-color: rgba(15, 23, 42, 0.7) !important;
+}
+
+.floating-whatsapp {
+  left: 1.5rem;
+  right: auto;
+}
+
+.floating-whatsapp span {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.floating-whatsapp:hover span,
+.floating-whatsapp:focus-visible span {
+  max-width: 10rem;
+  opacity: 1;
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 5rem;
+    background: #020b17 !important;
+  }
+
+  .max-w-7xl {
+    max-width: 100% !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  header {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  header .max-w-7xl {
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.15rem !important;
+  }
+
+  header .flex.items-center.justify-between.h-16,
+  header .flex.items-center.justify-between.h-20 {
+    height: auto !important;
+    min-height: 3.2rem !important;
+    gap: 0.5rem !important;
+  }
+
+  header .flex-1.max-w-xl {
+    display: none !important;
+  }
+
+  header a .text-2xl,
+  header .text-2xl {
+    font-size: 1.65rem !important;
+  }
+
+  .floating-whatsapp {
+    left: auto;
+    right: 0.9rem;
+    bottom: 5.6rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    padding: 0.9rem;
+    border-radius: 9999px;
+  }
+
+  .floating-whatsapp span {
+    display: none;
+  }
+
+  .floating-whatsapp i {
+    font-size: 1.55rem;
+  }
+
+  section .relative h1 {
+    font-size: clamp(2rem, 7vw, 3rem) !important;
+    line-height: 1.15 !important;
+  }
+
+  section .relative p {
+    font-size: 0.9rem !important;
+  }
+
+  .bg-amber-500.text-slate-950 {
+    margin: 0 !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.72rem !important;
+    line-height: 1.4 !important;
+    border-radius: 0 !important;
+  }
+
+  main#productSection,
+  section[aria-label="কেনাকাটার সুবিধা"],
+  section[aria-label="প্রধান পণ্য বিভাগ"],
+  section[aria-label="সাধারণ প্রশ্ন ও উত্তর"] {
+    padding-top: 0.8rem !important;
+    padding-bottom: 0.8rem !important;
+  }
+
+  #categoryTabs,
+  .bg-white.rounded-3xl,
+  .bg-white.rounded-2xl,
+  .rounded-3xl.border,
+  .rounded-2xl.border {
+    border-radius: 1.25rem !important;
+  }
+
+  #productGrid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.65rem !important;
+  }
+
+  #productGrid > * {
+    min-height: 150px !important;
+  }
+
+  .fixed.bottom-0 {
+    height: 4.2rem !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.45rem !important;
+  }
+
+  .fixed.bottom-0 a,
+  .fixed.bottom-0 button {
+    font-size: 0.62rem !important;
+  }
 }
 
 ::-webkit-scrollbar {
