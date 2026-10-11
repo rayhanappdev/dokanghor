@@ -854,8 +854,8 @@ function renderProducts() {
 
         <div class="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
           <div>
-            <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider">${p.categoryName || p.category}</span>
-            <h3 onclick="openQuickView(${p.id})" class="text-xs sm:text-sm font-bold text-slate-900 line-clamp-2 mt-1 mb-1.5 hover:text-brand-600 cursor-pointer transition">
+            <span class="text-xs font-semibold text-brand-600">${p.categoryName || p.category}</span>
+            <h3 onclick="openQuickView(${p.id})" class="text-sm sm:text-base font-bold text-slate-900 leading-snug line-clamp-2 mt-1 mb-1.5 hover:text-brand-600 cursor-pointer transition">
               ${p.name}
             </h3>
             

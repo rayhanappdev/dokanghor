@@ -173,15 +173,45 @@ body.dark-mode .bg-brand-50 {
 }
 
 @media (max-width: 767px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
   body {
     padding-bottom: 5rem;
     background: #020b17 !important;
   }
 
   .max-w-7xl {
+    width: 100% !important;
     max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
+  }
+
+  #authModal > .relative {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  #authModal > .relative > .relative.bg-white {
+    width: 100%;
+    max-width: min(28rem, calc(100vw - 2rem)) !important;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  #authModal #authTabLogin,
+  #authModal #authTabSignup {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   header {
@@ -268,6 +298,7 @@ body.dark-mode .bg-brand-50 {
   }
 
   #productGrid > * {
+    min-width: 0 !important;
     min-height: 150px !important;
   }
 

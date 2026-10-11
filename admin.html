@@ -53,6 +53,47 @@
       }
     }
   </script>
+  <script>
+    try {
+      if (localStorage.getItem('bd_admin_theme') === 'dark') {
+        document.documentElement.classList.add('admin-dark');
+      }
+    } catch (error) {}
+  </script>
+  <style>
+    html.admin-dark {
+      color-scheme: dark;
+    }
+
+    html.admin-dark body {
+      background-color: #0b1220;
+      color: #dbe4f0;
+    }
+
+    html.admin-dark .bg-slate-100 { background-color: #0b1220 !important; }
+    html.admin-dark .bg-white { background-color: #111c2e !important; }
+    html.admin-dark .bg-slate-50 { background-color: #172337 !important; }
+    html.admin-dark .bg-slate-900 { background-color: #070d19 !important; }
+    html.admin-dark .text-slate-900 { color: #f1f5f9 !important; }
+    html.admin-dark .text-slate-800 { color: #e2e8f0 !important; }
+    html.admin-dark .text-slate-700 { color: #cbd5e1 !important; }
+    html.admin-dark .text-slate-600 { color: #cbd5e1 !important; }
+    html.admin-dark .text-slate-500 { color: #b8c5d8 !important; }
+    html.admin-dark .text-slate-400 { color: #a7b5c9 !important; }
+    html.admin-dark .text-xs { font-size: 0.875rem !important; line-height: 1.45 !important; }
+    html.admin-dark [class~="text-[10px]"] { font-size: 0.75rem !important; line-height: 1.4 !important; }
+    html.admin-dark [class~="text-[11px]"] { font-size: 0.8rem !important; line-height: 1.4 !important; }
+    html.admin-dark input::placeholder,
+    html.admin-dark textarea::placeholder { color: #a7b5c9 !important; opacity: 1; }
+    html.admin-dark .border-slate-300 { border-color: #35445a !important; }
+    html.admin-dark .border-slate-200 { border-color: #29374b !important; }
+    html.admin-dark .border-slate-100 { border-color: #202d40 !important; }
+    html.admin-dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+      border-color: #202d40 !important;
+    }
+    html.admin-dark .hover\:bg-slate-50:hover { background-color: #1b2a40 !important; }
+    html.admin-dark .hover\:bg-slate-800:hover { background-color: #172337 !important; }
+  </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen antialiased">
 
@@ -101,6 +142,11 @@
             <span class="text-[10px] text-brand-400 font-semibold uppercase tracking-wider">অ্যাডমিন প্যানেল</span>
           </div>
         </div>
+
+        <button id="themeToggle" type="button" onclick="toggleAdminTheme()" class="w-full flex items-center gap-3 px-4 py-3 mb-5 rounded-xl border border-slate-700 hover:bg-slate-800 text-slate-300 transition text-left text-xs font-semibold">
+          <i id="themeToggleIcon" class="fa-solid fa-moon w-4"></i>
+          <span id="themeToggleLabel">ডার্ক মোড</span>
+        </button>
 
         <!-- Navigation Tabs -->
         <nav class="space-y-1.5 text-xs font-semibold">
@@ -317,6 +363,20 @@
 
     const ADMIN_PASSWORD = 'RaYhAn007@';
 
+    function syncThemeToggle() {
+      const isDark = document.documentElement.classList.contains('admin-dark');
+      document.getElementById('themeToggleLabel').textContent = isDark ? 'লাইট মোড' : 'ডার্ক মোড';
+      document.getElementById('themeToggleIcon').className = isDark
+        ? 'fa-solid fa-sun w-4'
+        : 'fa-solid fa-moon w-4';
+    }
+
+    function toggleAdminTheme() {
+      const isDark = document.documentElement.classList.toggle('admin-dark');
+      localStorage.setItem('bd_admin_theme', isDark ? 'dark' : 'light');
+      syncThemeToggle();
+    }
+
     document.getElementById('loginForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const pass = document.getElementById('adminPassInput').value;
@@ -492,6 +552,7 @@
     }
 
     // Check login on load
+    syncThemeToggle();
     checkAuth();
   </script>
 </body>
