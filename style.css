@@ -3,6 +3,85 @@ html {
   scroll-behavior: smooth;
 }
 
+.hero-carousel {
+  min-height: 24rem;
+}
+
+#heroProductContent {
+  min-width: 0;
+}
+
+.hero-product-visual img {
+  animation: heroImageIn 0.65s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hero-slide-content.hero-enter {
+  animation: heroContentIn 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hero-product-visual.hero-enter img {
+  animation: heroImageIn 0.65s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hero-control,
+.hero-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-control {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 9999px;
+  color: #334155;
+}
+
+.hero-control:hover {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.hero-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 9999px;
+  background: #94a3b8;
+}
+
+.hero-dot.is-active {
+  width: 1.4rem;
+  background: #16a34a;
+}
+
+@keyframes heroContentIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroImageIn {
+  from { opacity: 0.45; transform: scale(1.045); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-product-visual img,
+  .hero-slide-content.hero-enter,
+  .hero-product-visual.hero-enter img {
+    animation: none !important;
+  }
+
+  .hero-control,
+  .hero-dot {
+    transition: none !important;
+  }
+}
+
 body.dark-mode {
   background-color: #020817 !important;
   color: #e2e8f0 !important;
@@ -154,6 +233,36 @@ body.dark-mode .bg-brand-50 {
   background-color: rgba(15, 23, 42, 0.7) !important;
 }
 
+body.dark-mode .payment-option-label {
+  background: #111c2e !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .payment-option-label.payment-selected {
+  background: #263548 !important;
+  border-color: #22c55e !important;
+}
+
+body.dark-mode .payment-option-label span,
+body.dark-mode .payment-option-label p {
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .payment-option-label .payment-brand-badge {
+  background: #253247 !important;
+  border-color: #475569 !important;
+}
+
+body.dark-mode .payment-option-label input[type="radio"] {
+  flex: 0 0 auto;
+}
+
+body.dark-mode #manualPaymentBox {
+  background: #172337 !important;
+  border-color: #475569 !important;
+}
+
 .floating-whatsapp {
   left: 1.5rem;
   right: auto;
@@ -266,6 +375,18 @@ body.dark-mode .bg-brand-50 {
 
   section .relative p {
     font-size: 0.9rem !important;
+  }
+
+  #heroCarousel {
+    min-height: 0;
+  }
+
+  #heroProductVisual {
+    min-height: 230px;
+  }
+
+  #heroProductContent {
+    padding: 1.25rem;
   }
 
   .bg-amber-500.text-slate-950 {

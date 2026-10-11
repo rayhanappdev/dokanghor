@@ -4,7 +4,7 @@
  */
 
 // Products Storage Initialization
-let PRODUCTS = JSON.parse(localStorage.getItem('bd_store_products')) || [
+const DEFAULT_PRODUCTS = [
   {
     id: 1,
     name: "ওয়্যারলেস অ্যাক্টিভ নয়েজ ক্যানসেলিং হেডফোন",
@@ -66,7 +66,7 @@ let PRODUCTS = JSON.parse(localStorage.getItem('bd_store_products')) || [
     oldPrice: 5100,
     rating: 4.8,
     reviews: 87,
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
+    image: "https://images.unsplash.com/photo-1535016120720-40c646be5580?w=800&q=80",
     description: "কমপ্যাক্ট ডিজাইন, ১০০ ইঞ্চি স্ক্রীন ও ৩০০০ Lumen আলো সহ প্রজেক্টর।",
     badge: "হাই-টেক"
   },
@@ -105,7 +105,7 @@ let PRODUCTS = JSON.parse(localStorage.getItem('bd_store_products')) || [
     oldPrice: 2400,
     rating: 4.8,
     reviews: 118,
-    image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&q=80",
+    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&q=80",
     description: "ব্লুটুথ 5.3, ২৪ ঘণ্টা ব্যাটারি ও ডুয়াল বক্স স্পিকিং পাওয়ার।",
     badge: "ওয়ান-টাইম"
   },
@@ -118,7 +118,7 @@ let PRODUCTS = JSON.parse(localStorage.getItem('bd_store_products')) || [
     oldPrice: 1200,
     rating: 4.5,
     reviews: 44,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80",
     description: "স্টাইলিশ ও টেকসই ব্যাগ, অফিস ও ক্যাজুয়াল স্টাইলের জন্য উপযুক্ত।",
     badge: "ফ্যাশন"
   },
@@ -157,14 +157,119 @@ let PRODUCTS = JSON.parse(localStorage.getItem('bd_store_products')) || [
     oldPrice: 2900,
     rating: 4.7,
     reviews: 92,
-    image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600&q=80",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
     description: "সহজ ভ্রমণ, টেকসই ফ্যাবরিক ও বহু কভারের travel backpack।",
     badge: "ট্রেন্ডিং"
+  },
+  {
+    id: 13,
+    name: "প্রিমিয়াম ট্রু ওয়্যারলেস ইয়ারবাডস",
+    category: "gadgets",
+    categoryName: "গ্যাজেটস",
+    price: 1290,
+    oldPrice: 1790,
+    rating: 4.8,
+    reviews: 83,
+    image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&q=80",
+    description: "ক্লিয়ার সাউন্ড, টাচ কন্ট্রোল ও চার্জিং কেসসহ দৈনন্দিন ব্যবহারের আরামদায়ক ইয়ারবাডস।",
+    badge: "নতুন"
+  },
+  {
+    id: 14,
+    name: "পোর্টেবল ব্লুটুথ স্পিকার",
+    category: "gadgets",
+    categoryName: "গ্যাজেটস",
+    price: 1590,
+    oldPrice: 2190,
+    rating: 4.7,
+    reviews: 69,
+    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&q=80",
+    description: "কমপ্যাক্ট ডিজাইন, শক্তিশালী বেজ ও দীর্ঘ ব্যাটারি ব্যাকআপসহ ঘরে বা বাইরে গান উপভোগ করুন।",
+    badge: "হট ডিল"
+  },
+  {
+    id: 15,
+    name: "ফাস্ট চার্জিং পাওয়ার ব্যাংক ২০০০০mAh",
+    category: "electronics",
+    categoryName: "ইলেকট্রনিক্স",
+    price: 1890,
+    oldPrice: 2490,
+    rating: 4.8,
+    reviews: 112,
+    image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800&q=80",
+    description: "একাধিক ডিভাইস চার্জের সুবিধা ও দ্রুত চার্জিং সাপোর্টসহ ভ্রমণের নির্ভরযোগ্য সঙ্গী।",
+    badge: "বেস্ট সেলার"
+  },
+  {
+    id: 16,
+    name: "ক্লাসিক UV প্রোটেকশন সানগ্লাস",
+    category: "fashion",
+    categoryName: "ফ্যাশন",
+    price: 790,
+    oldPrice: 1190,
+    rating: 4.6,
+    reviews: 51,
+    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80",
+    description: "হালকা ফ্রেম ও UV প্রোটেকশন লেন্সের স্টাইলিশ সানগ্লাস, দৈনন্দিন ব্যবহারের জন্য উপযোগী।",
+    badge: "স্টাইল পিক"
+  },
+  {
+    id: 17,
+    name: "ক্যানভাস ডেইলি টোট ব্যাগ",
+    category: "fashion",
+    categoryName: "ফ্যাশন",
+    price: 690,
+    oldPrice: 990,
+    rating: 4.5,
+    reviews: 38,
+    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80",
+    description: "মজবুত ক্যানভাস কাপড়ের হালকা ব্যাগ, কাজ, ক্লাস ও দৈনন্দিন কেনাকাটায় সহজে ব্যবহারযোগ্য।",
+    badge: "জনপ্রিয়"
+  },
+  {
+    id: 18,
+    name: "মিনিমাল LED ডেস্ক ল্যাম্প",
+    category: "electronics",
+    categoryName: "ইলেকট্রনিক্স",
+    price: 1150,
+    oldPrice: 1590,
+    rating: 4.7,
+    reviews: 46,
+    image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&q=80",
+    description: "চোখের আরামের আলো ও পরিপাটি ডিজাইনের LED ল্যাম্প, পড়াশোনা বা কাজের টেবিলের জন্য।",
+    badge: "নতুন"
   }
 ];
 
-if (!localStorage.getItem('bd_store_products')) {
+let PRODUCTS = JSON.parse(localStorage.getItem('bd_store_products')) || [...DEFAULT_PRODUCTS];
+
+if (!localStorage.getItem('bd_demo_catalog_v1')) {
+  const existingProductIds = new Set(PRODUCTS.map(product => String(product.id)));
+  const missingDemoProducts = DEFAULT_PRODUCTS.filter(product => !existingProductIds.has(String(product.id)));
+  PRODUCTS.push(...missingDemoProducts);
   localStorage.setItem('bd_store_products', JSON.stringify(PRODUCTS));
+  localStorage.setItem('bd_demo_catalog_v1', 'true');
+}
+
+if (!localStorage.getItem('bd_demo_image_fixes_v1')) {
+  const stockImageFixes = [
+    [5, 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80', 'https://images.unsplash.com/photo-1535016120720-40c646be5580?w=800&q=80'],
+    [8, 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&q=80', 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&q=80'],
+    [9, 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80', 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80'],
+    [12, 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600&q=80', 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80']
+  ];
+  let stockImagesUpdated = false;
+
+  stockImageFixes.forEach(([productId, previousImage, updatedImage]) => {
+    const product = PRODUCTS.find(item => item.id === productId);
+    if (product?.image === previousImage) {
+      product.image = updatedImage;
+      stockImagesUpdated = true;
+    }
+  });
+
+  if (stockImagesUpdated) localStorage.setItem('bd_store_products', JSON.stringify(PRODUCTS));
+  localStorage.setItem('bd_demo_image_fixes_v1', 'true');
 }
 
 const CATEGORIES = [
@@ -275,10 +380,116 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAuthHeader();
   renderCategories();
   renderProducts();
+  initializeHeroCarousel();
   updateCartUI();
   updateWishlistUI();
   setupEvents();
+  setupWhatsAppFooterVisibility();
 });
+
+function initializeHeroCarousel() {
+  const carousel = document.getElementById('heroCarousel');
+  if (!carousel) return;
+
+  const slides = PRODUCTS.filter(product => product.image && product.name);
+  if (!slides.length) return;
+
+  const content = document.getElementById('heroProductContent');
+  const visual = document.getElementById('heroProductVisual');
+  const image = document.getElementById('heroProductImage');
+  const dots = document.getElementById('heroSlideDots');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const visibleDotCount = Math.min(5, slides.length);
+  let currentIndex = 0;
+  let autoplayTimer = null;
+
+  function showSlide(index, animate = true) {
+    currentIndex = (index + slides.length) % slides.length;
+    const product = slides[currentIndex];
+
+    document.getElementById('heroProductCategory').textContent = product.categoryName || product.category;
+    document.getElementById('heroProductName').textContent = product.name;
+    document.getElementById('heroProductDescription').textContent = product.description || '';
+    document.getElementById('heroProductRating').textContent = product.rating || '5.0';
+    document.getElementById('heroProductReviews').textContent = `(${Number(product.reviews || 1).toLocaleString('bn-BD')} টি রিভিউ)`;
+    document.getElementById('heroProductPrice').textContent = `৳${Number(product.price).toLocaleString('bn-BD')}`;
+
+    const oldPrice = document.getElementById('heroProductOldPrice');
+    oldPrice.textContent = product.oldPrice ? `৳${Number(product.oldPrice).toLocaleString('bn-BD')}` : '';
+    oldPrice.classList.toggle('hidden', !product.oldPrice);
+
+    const badge = document.getElementById('heroProductBadge');
+    badge.textContent = product.badge || 'জনপ্রিয়';
+    image.src = product.image;
+    image.alt = product.name;
+    document.getElementById('heroBuyButton').onclick = () => buyNow(product.id);
+    document.getElementById('heroSlideCount').textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+
+    const firstVisibleDot = Math.max(0, Math.min(currentIndex - Math.floor(visibleDotCount / 2), slides.length - visibleDotCount));
+    [...dots.children].forEach((dot, dotIndex) => {
+      const slideIndex = firstVisibleDot + dotIndex;
+      const active = slideIndex === currentIndex;
+      dot.dataset.slideIndex = slideIndex;
+      dot.setAttribute('aria-label', `${slideIndex + 1}. ${slides[slideIndex].name}`);
+      dot.classList.toggle('is-active', active);
+      dot.setAttribute('aria-current', active ? 'true' : 'false');
+    });
+
+    if (animate && !reducedMotion) {
+      content.classList.remove('hero-enter');
+      visual.classList.remove('hero-enter');
+      requestAnimationFrame(() => {
+        content.classList.add('hero-enter');
+        visual.classList.add('hero-enter');
+      });
+    }
+  }
+
+  for (let index = 0; index < visibleDotCount; index += 1) {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'hero-dot';
+    dot.addEventListener('click', () => showSlide(Number(dot.dataset.slideIndex)));
+    dots.append(dot);
+  }
+
+  document.getElementById('heroPrevious').addEventListener('click', () => showSlide(currentIndex - 1));
+  document.getElementById('heroNext').addEventListener('click', () => showSlide(currentIndex + 1));
+
+  function stopAutoplay() {
+    window.clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    if (slides.length < 2 || reducedMotion || document.hidden) return;
+    autoplayTimer = window.setInterval(() => showSlide(currentIndex + 1), 2000);
+  }
+
+  carousel.addEventListener('mouseenter', stopAutoplay);
+  carousel.addEventListener('mouseleave', startAutoplay);
+  carousel.addEventListener('focusin', stopAutoplay);
+  carousel.addEventListener('focusout', event => {
+    if (!carousel.contains(event.relatedTarget)) startAutoplay();
+  });
+  document.addEventListener('visibilitychange', () => document.hidden ? stopAutoplay() : startAutoplay());
+
+  showSlide(0, false);
+  startAutoplay();
+}
+
+function setupWhatsAppFooterVisibility() {
+  const whatsappButton = document.querySelector('.floating-whatsapp');
+  const footer = document.querySelector('footer');
+  if (!whatsappButton || !footer || !('IntersectionObserver' in window)) return;
+
+  const footerObserver = new IntersectionObserver(([entry]) => {
+    whatsappButton.classList.toggle('hidden', entry.isIntersecting);
+  }, { threshold: 0.01 });
+
+  footerObserver.observe(footer);
+}
 
 function initializeTheme() {
   const savedTheme = localStorage.getItem('bd_store_theme');
@@ -1224,6 +1435,9 @@ function updateCheckoutSummary() {
 
 function togglePaymentBox() {
   const method = document.querySelector('input[name="paymentMethod"]:checked')?.value;
+  document.querySelectorAll('.payment-option-label').forEach((option) => {
+    option.classList.toggle('payment-selected', option.querySelector('input[name="paymentMethod"]')?.checked === true);
+  });
   const box = document.getElementById('manualPaymentBox');
   const label = document.getElementById('merchantLabel');
   const num = document.getElementById('merchantNumber');
